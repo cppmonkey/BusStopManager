@@ -3,35 +3,28 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>Bus Stop Manager</title>
-    <link type="text/css" href="css/ui-darkness/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
-	<script type="text/javascript" src="js/jquery-1.9.1.js"></script>
-	<script type="text/javascript" src="js/jquery-ui-1.10.3.custom.js"></script>
+    <link type="text/css" href="./css/ui-darkness/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
+	<script type="text/javascript" src="./js/jquery-1.9.1.js"></script>
+	<script type="text/javascript" src="./js/jquery-ui-1.10.3.custom.js"></script>
     <style type="text/css">
-        #screens div { width: 120px; height: 150px; padding: 0.5em; float: left; margin: 5px; }
-        #shops div, #screens div div { width: 80px; height: 80px; padding: 0.5em; float: left; margin: 5px 5px 5px 0; }
+        #screens div { width: 5%; height: 150px; padding: 0.5em; float: left; margin: 5px; }
+        #shops div{ width: 4%; height: 80px; padding: 0.5em; float: left; margin: 5px 5px 5px 0; }
         #shops { width: 100%; height:30em; }
         body {
 	        font-size: 62.5%;
 	        font-family: "Trebuchet MS", "Arial", "Helvetica", "Verdana", "sans-serif";
-        }
-
-        table {
-	        font-size: 1em;
-        }
-
-        .demo-description {
-	        clear: both;
-	        padding: 12px;
-	        font-size: 1.3em;
-	        line-height: 1.4em;
+			background-image:url('./img/raspi_colour_r.png');
+			text-align: center;
         }
 
         .ui-draggable, .ui-droppable {
 	        background-position: top;
         }
+
+		#screens div:first-child, #shops div:first-child{ margin-left: 0; }
     </style>
     <script type="text/javascript">
-        Debug = function (msg) {
+        function Debug(msg) {
             if ($("#output").text == "") {
                 $("#output").append(msg);
             } else {
@@ -39,8 +32,43 @@
             }
         }
 
-        $(document).ready(function () {
+		onerror=Debug;
+
+        $( init );
+
+		function init() {
             // Commence doing the crazy stuffs!!
+
+			// Create screens before populating them with shop details
+			var screens = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16];
+			for ( var i=1; i<=screens.length; i++ ) {
+				$('<div>Screen ' + i + '</div>')
+					.data( 'number', screens[i] )
+					.attr('id', 'screen'+screens[i] )
+					.appendTo( '#screens')
+					.addClass("ui-widget-header")
+					.droppable( {
+						accept: '#shops div',
+						hoverClass: 'ui-state-hover'/*,
+						drop: handleShopDrop*/
+					});
+			}
+
+			var shops = {"Shop 01":["Windermere","Blue"], "Shop 02":["","Blue"], "Shop 03":["Gildford","Blue"]};
+			for (store in shops) {
+				$('<div>' + shops[store][0] + '<div>' + shops[store][1] + '</div></div>')
+					.data('number', store)
+					.attr('id',store)
+					.appendTo('#shops')
+					.addClass('ui-widget-content')
+					.draggable({
+						revert: "invalid",
+						cursor: 'move'
+					});
+
+			}
+			/*
+
             $("#screens div div").droppable({
                 accept: "#shops div",
                 activeClass: "ui-state-hover",
@@ -71,30 +99,15 @@
                 revert: "invalid"
             });
 
+			*/
 
-        });
+        };
     </script>
 </head>
 <body>
-    <div id="screens" style="clear:both;">
-        <div title="screen 1" class="ui-widget-header">Screen 1<br /><div>Drop shop here</div><a href="preview.php?screen=1" target="_blank">Preview</a></div>
-        <div title="screen 2" class="ui-widget-header">Screen 2<br /><div>Drop shop here</div><a href="preview.php?screen=2" target="_blank">Preview</a></div>
-        <div title="screen 3" class="ui-widget-header">Screen 3<br /><div>Drop shop here</div><a href="preview.php?screen=3" target="_blank">Preview</a></div>
-        <div title="screen 4" class="ui-widget-header">Screen 4<br /><div>Drop shop here</div><a href="preview.php?screen=4" target="_blank">Preview</a></div>
-        <div title="screen 5" class="ui-widget-header">Screen 5<br /><div>Drop shop here</div><a href="preview.php?screen=5" target="_blank">Preview</a></div>
-        <div title="screen 6" class="ui-widget-header">Screen 6<br /><div>Drop shop here</div><a href="preview.php?screen=6" target="_blank">Preview</a></div>
-    </div>
-    <br style="clear:both;" />
-    <div id="shops" style="clear:both;" class="ui-widget-header">
-        <div class="ui-widget-content">Shop 1</div>
-        <div class="ui-widget-content">Shop 2</div>
-        <div class="ui-widget-content">Shop 3</div>
-        <div class="ui-widget-content">Shop 4</div>
-        <div class="ui-widget-content">Shop 5</div>
-        <div class="ui-widget-content">Shop 6</div>
-        <div class="ui-widget-content">Shop 7</div>
-    </div>
-    <div style="clear:both;">Debug<div id="output"></div></div>
+    <div id="screens"> </div>
+    <div id="shops" class="ui-widget-header"></div>
+    <div style="background-color:#fff;">Debug<div id="output"></div></div>
 
     <div style="float:right;position:absolute;bottom:1em;" id="poweredby"><a href="http://www.lighttpd.net/" target="_blank"><img src="./img/buttons/light_button.png" width="80" height="27" alt="Lighttpd" title="Site powered by the Lighttpd web server"></a></div>
 
