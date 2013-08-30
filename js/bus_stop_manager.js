@@ -25,6 +25,14 @@ function handleShopDrop(event, ui) {
     ui.draggable.position({ of: $(this), my: 'center bottom', at: 'center bottom-5' });
 }
 
+function handleScreenAccept(ui) {
+    //Must forfill '#shops div'
+    if (ui.hasClass("ui-draggable") &&!ui.attr("attached")) {
+            return true;
+    }
+    return false;
+}
+
 function init() {
     // Commence doing the crazy stuffs!!
     $('#debug').dialog({ position: { my: "right-100 bottom-100", at: "right bottom", of: window} });
@@ -39,6 +47,13 @@ function init() {
             .addClass("ui-widget-header")
             .droppable({ accept: '#shops div', hoverClass: 'ui-state-hover', drop: handleShopDrop });
     }
+
+    function handleShopReturn(event, ui) {
+        ui.draggable.attr("style", "position: relative;");
+        ui.draggable.attrRemove("attached");
+    }
+
+    $("#shops").droppable({ accpt: '#shop div', drop: handleShopReturn });
 
     var shops = [["01", "Windermere", "Blue"],
         ["02", "York", "Blue"],
