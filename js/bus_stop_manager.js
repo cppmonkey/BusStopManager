@@ -31,8 +31,8 @@ function init() {
 
     // Create screens before populating them with shop details
     var screens = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-    for (var i = 1; i <= screens.length; i++) {
-        $('<div>Screen ' + i + '</div>')
+    for (var i = 0; i < screens.length; i++) {
+        $('<div>Screen ' + screens[i] + '</div>')
             .data('number', screens[i])
             .attr('id', 'screen' + screens[i])
             .appendTo('#screens')
@@ -108,8 +108,8 @@ function init() {
 
     for (store in shops) {
         $('<div>' + shops[store][0] + '<br />' + shops[store][1] + '<br />' + shops[store][2] + '</div>')
-            .data('number', store)
-            .attr('id', store)
+            .data('number', shops[store][0])
+            .attr('id', 'shop' + shops[store][0])
             .appendTo('#shops')
             .addClass('ui-widget-content')
             .draggable({
