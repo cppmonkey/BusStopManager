@@ -50,7 +50,7 @@ function init() {
 
     function handleShopReturn(event, ui) {
         ui.draggable.attr("style", "position: relative;");
-        ui.draggable.attrRemove("attached");
+        // ui.draggable.attrRemove("attached"); attrRemove() doesn't exist?
     }
 
     $("#shops").droppable({ accpt: '#shop div', drop: handleShopReturn });
